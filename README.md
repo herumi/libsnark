@@ -157,6 +157,9 @@ options:
 * "alt_bn128":
    an alternative to "bn128", somewhat slower but avoids dynamic code generation.
 
+* "mcl_bn128":
+   an alternative to "bn128", using the new MCL elliptic cuve library. Somewhat slower on x86-64 but supported and optimized for different architectures.
+
 Note that bn128 requires an x86-64 CPU while the other curve choices
 should be architecture-independent; see [portability](#portability).
 
