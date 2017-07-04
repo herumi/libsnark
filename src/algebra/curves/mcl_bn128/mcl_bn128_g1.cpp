@@ -52,8 +52,9 @@ void mcl_bn128_G1::print() const
     }
     else
     {
-        pt.normalize();
-        std::cout << "(" << pt.x << " : " << pt.y << " : " << pt.z << ")\n";
+    	auto _pt(pt);
+    	_pt.normalize();
+        std::cout << "(" << _pt.x << " : " << _pt.y << " : " << _pt.z << ")\n";
     }
 }
 
@@ -168,26 +169,27 @@ mcl_bn128_G1 mcl_bn128_G1::random_element()
 
 std::ostream& operator<<(std::ostream &out, const mcl_bn128_G1 &g)
 {
-    g.pt.normalize();
+	auto g_pt(g.pt);
+    g_pt.normalize();
 
     out << (g.is_zero() ? '1' : '0') << OUTPUT_SEPARATOR;
 
 #ifdef NO_PT_COMPRESSION
     /* no point compression case */
 #ifndef BINARY_OUTPUT
-    out << g.pt.x << OUTPUT_SEPARATOR << g.pt.y;
+    out << g_pt.x << OUTPUT_SEPARATOR << g_pt.y;
 #else
-    out.write((char*) &g.pt, sizeof(g.pt));
+    out.write((char*) &g_pt, sizeof(g_pt));
 #endif
 
 #else
     /* point compression case */
 #ifndef BINARY_OUTPUT
-    out << g.pt.x;
+    out << g_pt.x;
 #else
-    out.write((char*) &g.pt.x, sizeof(g.pt.x));
+    out.write((char*) &g_pt.x, sizeof(g_pt.x));
 #endif
-    out << OUTPUT_SEPARATOR << (g.pt.y.getUnit()[0] & 1 ? '1' : '0');
+    out << OUTPUT_SEPARATOR << (g_pt.y.getUnit()[0] & 1 ? '1' : '0');
 #endif
 
     return out;
